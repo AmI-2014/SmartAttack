@@ -1,0 +1,16 @@
+import Queue
+
+if __name__ == '__main__':
+
+    coda=Queue(0)
+    send=0 # va a 1 quando uno studente si prenota
+    request=0 # va a 1 quando l'esercitatore chiede di visualizzare il prossimo studente in coda
+   
+    while raw_input()== 'stop':  #quando finisce l'esercitazione
+        while request == 0:
+            if send==1:
+                NomePC= raw_input()
+                coda.put(NomePC)
+       
+
+        ToSmartWatch = coda.get() #variabile che sarà inviata all'esercitatore 
