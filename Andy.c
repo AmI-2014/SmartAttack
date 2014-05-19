@@ -2,11 +2,11 @@
 
 Window *window;	
 static TextLayer *text_layer;
+static char pc[10];
 
 // Key values for AppMessage Dictionary
 enum {
-	STATUS_KEY = 0,	
-	MESSAGE_KEY = 1
+  QUOTE_KEY_PC = 1
 };
 
 // Write message to buffer & send
@@ -15,10 +15,10 @@ void send_message(void){
 	
 	app_message_outbox_begin(&iter);
 
-	dict_write_uint8(iter, STATUS_KEY, 0x1);
-	dict_write_end(iter);
-	// Tuplet value = TupletInteger(1, 42);
- 	// dict_write_tuplet(iter, &value);
+	//dict_write_uint8(iter, STATUS_KEY, 0x1);
+	//dict_write_end(iter);
+	 Tuplet value = TupletCString(1, "NEXT");
+ 	 dict_write_tuplet(iter, &value);
   	app_message_outbox_send();
 }
 
@@ -33,16 +33,18 @@ void send_message(void){
  }
 
 
- void in_received_handler(DictionaryIterator *received, void *context) {
+ void in_received_handler(DictionaryIterator *iter, void *context) {
    // incoming message received
 	
-	text_layer_set_text(text_layer, received);	
-	 // Check for fields you expect to receive ??????
-         //Tuple *text_tuple = dict_find(received, AKEY_TEXT);
+	      //text_layer_set_text(text_layer, received);	
+	       // Check for fields you expect to receive ??????
+         Tuple *text_tuple = dict_find(iter, QUOTE_KEY_PC);
 
          // Act on the found fields received
-         // if (text_tuple) {
-         //  APP_LOG(APP_LOG_LEVEL_DEBUG, "Text: %s", text_tuple->value->cstring);
+         if (text_tuple) {
+            strncpy(pc,  text_tuple->value->cstring, 10);
+            text_layer_set_text(text_layer, pc);
+  }
  }
 
 
@@ -52,6 +54,7 @@ void send_message(void){
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
   text_layer_set_text(text_layer, "Down");
+  send_message();
   
 }
 
