@@ -1,0 +1,25 @@
+import cherrypy
+imp0ort json
+
+def jsonify(func):
+    '''JSON decorator for CherryPy'''
+    @wraps(func)
+    def wrapper(*args, **kwargs): # *args are the function positional arguments, kwargs are the function keyword arguments
+        # call the function and store the result in the value variable
+        value = func(*args, **kwargs)
+        # set the response content-type to json
+        cherrypy.response.headers["Content-Type"] = "application/json"
+        # serialize as json
+        return json.dumps(value, indent=4, default=lambda o: o.__dict__)
+
+    return wrapper
+
+
+#ricezione raspberry
+
+class coda:
+	@jsonify
+	def PUT(self, PcName= null):
+	#codiice per inserire pc name nella coda
+	json.loads(cherrypy.request.body.read())
+  
