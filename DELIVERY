@@ -1,0 +1,88 @@
+VISION & GOAL:
+
+ >THE PROBLEM: our idea is strictly linked to our academic experiences, to be more precise to the practice lessons in the
+	labs during which 2 or more tutors are available for helping students and answer to their questions. The way to capture 
+	the tutors' attemption is raising the hand... and prey. In fact the most frequent situation that you can find in laibs 
+	is seeing tutors running from a side to another of the laib in a limbs forest. On the otherside, it's also possible to 
+	find the situation in which very few students ask for something so the tutor perches in a strategic point of the laib 
+	doing nothing but waiting to see a hand raised. The worst consequence of this management of the lessons is that both 
+	students and tutors waiste a significant amount of time.
+
+ >OUR GOAL: make the environment (the laib)
+  >>able to sense when a student needs the tutor in order to prevent the tutor 
+	  from doing it, not because the tutors are not able to do it, but because the environment could do it better.
+	>>able to manage that informations in order to guarantee help to each student
+
+ >BRIEF SUMMARY: We don't want the environment to read in students' minds or sniff in their work. We want that when a 
+  student has to ask something he/she has just to execute a simple gesture to make the environment aware of it and then 
+  just wait for a tutor to come, continuing to work or, if the problem is too huge to continue working, doing something 
+  else, like exchange doubts with other students. We also want the tutors to answer questions and doing nothing else, 
+  except walking. Therefore we want make the environment able to sense and recognize the student gesture, track all the 
+  students that need help and, anytime a tutor is free and a student needs help, tell the tutor to go to the student.
+
+*************************************************
+
+ANALYSIS & SYSTEM DESIGN:			
+ >FUNCTIONAL REQUIREMENTS:
+	>>#Sensing: sense when a student needs help. We want each student to behave as usual, so we ask him/her just to raise an 
+	  hand, as they do in any other situations. We immediately rejected to think about a unique device able to sense it and 
+	  we propose to provide each student a device. The simplest solution is to create the device using the computer on which
+	  the student is working and a webcam. 
+	>>#Reservation: raising the hand is sufficient for the student to be guaranteed of a tutor to come to help
+	>>#Queue Management: the students' reservations have to be managed in a queue
+	>>#Communication: 
+	  >>>between #sensing module and #queue management module: will be defined together with modules' architecture
+		>>>between #queue management module and tutors: tutors don't need to have access to the queue, they need, wherever 
+		   they are in the laib, just to know the student to go to help. Also these requirement implies that every tutor has 
+		   to be provided a device able to communicate with the environment.	
+
+ >NON FUNCTIONAL REQUIREMENTS (product requirements): 
+  >>the hand must be recognized in less than 10 seconds
+	>>the student must know if the hand has been recognized
+	>>sensing must not depend on the webcam used
+	>>simultaneous requests must to be managed
+
+ >PROPOSED ARCHITECTURE(Architecture Definition & Component Selection): [disegnino]
+	>>System Architecture: the main system components are
+		>>>computational nodes: 
+			 >>>>the one able to recognize the raising hand gesture
+			 >>>>Queue manager: manages the queue of reservations
+		>>>Sensors/actuators:
+			 >>>>the one able to sense students' movements
+	  >>>User interfaces: 
+			 >>>>there's no interface for the students users, except for the message of reservation taken
+			 >>>>the interface for the tutors is on the devices that communicate with the queue manager
+				
+		>>>Functions deployed:
+			 >>>>System able to recognize a raised hand: in the course version every student uses a computer of the laib. We've 
+			     so decided that this module should be implemented as: a program running on the computer that analyzes 
+			     continuously the images catured from a webcam.
+			 >>>>Reservations queue manager: a software that implements a queue. It has to be hosted by any kind of module that 
+			     has enough computational power. The queue should be able to receive reservation communications and manage them.
+					
+ >>Hardware architecture:
+		>>>Hand raised recognition system: laib computer and webcam
+		>>>Host for the queue manager: we've decided to use a raspberry pi because its performances suite with those needed
+		>>>Devices for the tutors: the only thing that the tutors have to do is to ask for the computer to go to, so they need 
+		   the smallest device able to send the request to the queue manager and show the result. 
+		   We've decided that this devices would be smartwatches. We've decided for pebbles because they're supplied in the 
+		   course. 
+			
+ >>Software architecture:
+	 >>>Major software architectural modules:
+			>>>>Raised Hand Recognition and reservation: software wrote in python that uses the OpenCV libraries to analyze the 
+			    images captured from webcam and, recognized the raised hand, communicates to the queue manager the reservation
+			>>>>Queue manager: software wrote in python that manages the queue and when receives a query from a pebble sends it 
+			    the next computer where the tutor has to go
+			>>>>pebble: pebble app that we're still developing.
+			
+ >>Communication between devices(network architecture):
+	 >>>Recognition module-Queue Manager: the software able to recognize gestures sends to the queue manager something that 
+	    identifies the computer on which the student that has raised the hand is working. The	possible ways to do it are: 
+			>>>>SOCKET: we thaught that the best way to do it is to send a string containing the computer id. 
+					We've verified that we can perform this very simple communication using a socket: the socket would be opened to 
+					send the string and then closed to avoid the presence of too many unused sockets. 
+			>>>>REST WEB SERVER: the other option would be using REST and json
+			>>>>OTHER OPTIONS: we're considering other options. We've not implemented anything yet.
+	 >>>queue Manager-Pebble: bluetooth
+****************************************************
