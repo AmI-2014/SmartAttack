@@ -164,13 +164,58 @@ the student is working and a webcam. </p>
 	</p>
 		<h2>NON FUNCTIONAL REQUIREMENTS (product requirements):</h2>
 	<p>the hand must be recognized in less than 10 seconds
-      >>the student must know if the hand has been recognized
-      >>sensing must not depend on the webcam used
-      >>simultaneous requests must to be managed</p>
-<h2></h2>
+     <p>>>the student must know if the hand has been recognized</p>
+     <p> >>sensing must not depend on the webcam used</p>
+      <p>>>simultaneous requests must to be managed</p>
+<h2>PROPOSED ARCHITECTURE(Architecture Definition & Component Selection):</h2>
+<p>>>System Architecture: the main system components are</p>
+<p>>>>computational nodes: </p>           
+<p>>>>>the one able to recognize the raising hand gesture</p>
+<p>>>>>Queue manager: manages the queue of reservations</p>
+<p>>>>Sensors/actuators:</p>
+<p> >>>>the one able to sense students' movements</p>
+<p>>>>User interfaces:</p>
+<p> >>>>there's no interface for the students users, except for the message of reservation taken</p>
+<p>>>>>the interface for the tutors is on the devices that communicate with the queue manager</p>
 <p></p>
-           
-            </div>
+<p>>>>Functions deployed:</p>
+<p>	>>>>System able to recognize a raised hand: in the course version every student uses a computer of the laib. We've
+so decided that this module should be implemented as: a program running on the computer that analyzes
+continuously the images catured from a webcam.</p>
+<p>	>>>>Reservations queue manager: a software that implements a queue. It has to be hosted by any kind of module that
+has enough computational power. The queue should be able to receive reservation communications and manage them.</p>
+<p></p>
+<p>>>Hardware architecture:</p>
+<p>>>>Hand raised recognition system: laib computer and webcam</p>
+<p>>>>Host for the queue manager: we've decided to use a raspberry pi because its performances suite with those needed</p>
+<p>	>>>Devices for the tutors: the only thing that the tutors have to do is to ask for the computer to go to, so they need
+the smallest device able to send the request to the queue manager and show the result.
+We've decided that this devices would be smartwatches. We've decided for pebbles because they're supplied in the
+course. </p>
+<p></p>
+<p>>>Software architecture:</p>
+<p> >>>Major software architectural modules:</p>
+<p>	>>>>Raised Hand Recognition and reservation: software wrote in python that uses the OpenCV libraries to analyze the
+images captured from webcam and, recognized the raised hand, communicates to the queue manager the reservation</p>	
+<p>	>>>>Queue manager: software wrote in python that manages the queue and when receives a query from a pebble sends it
+the next computer where the tutor has to go</p>	
+<p>>>>>pebble: pebble app that we're still developing.</p>	
+<p></p>	
+<p> >>Communication between devices(network architecture):</p>	
+<p>	>>>Recognition module-Queue Manager: the software able to recognize gestures sends to the queue manager something that
+identifies the computer on which the student that has raised the hand is working.</p>	
+<p>The possible ways to do it are:</p>	
+<p>	>>>>SOCKET: we thaught that the best way to do it is to send a string containing the computer id.
+We've verified that we can perform this very simple communication using a socket: the socket would be opened to
+send the string and then closed to avoid the presence of too many unused sockets. </p>	
+<p>>>>>REST WEB SERVER: the other option would be using REST and json</p>	
+<p>>>>>OTHER OPTIONS: we're considering other options. We've not implemented anything yet.</p>	
+<p></p>	
+<p> >>>queue Manager-Pebble: bluetooth</p>	
+<p></p>	
+<p></p>	
+	
+</div>
         </div><!-- end of row -->
     </div>
 </section> <!-- end of templatemo_services -->
