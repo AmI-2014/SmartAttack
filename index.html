@@ -104,20 +104,31 @@
 
             <div class="col-md-1"></div>
             <div class="col-md-16">
-                <h2>OUR GOAL</h2>
-                <p>make the environment (the laib)</p>
- <p>>>able to sense when a student needs the tutor in order to prevent the tutor
-from doing it, not because the tutors are not able to do it, but because the environment could do it better.</p> 
-<p>>>able to manage that informations in order to guarantee help to each student</p>
                 
                  <h2>THE PROBLEM:</h2>
-                 <p>our idea is strictly linked to our academic experiences, to be more precise to the practice lessons in the
+                 <p>Our idea is strictly linked to our academic experiences, to be more precise to the practice lessons in the
 labs during which 2 or more tutors are available for helping students and answer to their questions. The way to capture
 the tutors' attemption is raising the hand... and prey. In fact the most frequent situation that you can find in laibs
 is seeing tutors running from a side to another of the laib in a limbs forest. On the otherside, it's also possible to
 find the situation in which very few students ask for something so the tutor perches in a strategic point of the laib
 doing nothing but waiting to see a hand raised. The worst consequence of this management of the lessons is that both
 students and tutors waiste a significant amount of time.</p>
+                
+                <h2>OUR GOAL:</h2>
+                <p>make the environment (the laib)</p>
+ <p>>>able to sense when a student needs the tutor in order to prevent the tutor
+from doing it, not because the tutors are not able to do it, but because the environment could do it better.</p> 
+<p>>>able to manage that informations in order to guarantee help to each student</p>
+               
+                <h2>BRIEF SUMMARY:</h2>
+                <p>We don't want the environment to read in students' minds or sniff in their work. We want that when a
+  student has to ask something he/she has just to execute a simple gesture to make the environment aware of it and then
+  just wait for a tutor to come, continuing to work or, if the problem is too huge to continue working, doing something
+  else, like exchange doubts with other students. We also want the tutors to answer questions and doing nothing else,
+  except walking. Therefore we want make the environment able to sense and recognize the student gesture, track all the
+  students that need help and, anytime a tutor is free and a student needs help, tell the tutor to go to the student.
+</p>
+                
             </div>
         </div><!-- end of row -->
 
@@ -130,7 +141,7 @@ students and tutors waiste a significant amount of time.</p>
 <section id="templatemo_services">
     <div class="container">
         <div class="row">
-            <h1>Video</h1>
+            <h1>ANALYSIS & SYSTEM DESIGN: </h1>
         </div>
 
             </div>
@@ -144,9 +155,25 @@ students and tutors waiste a significant amount of time.</p>
 <div class="container">
     <div class="solidline"></div>
 </div>
-
-
-
+<h2>FUNCTIONAL REQUIREMENTS;</h2>
+<p>	>>#Sensing: sense when a student needs help. We want each student to behave as usual, so we ask him/her just to raise an
+hand, as they do in any other situations. We immediately rejected to think about a unique device able to sense it and
+we propose to provide each student a device. The simplest solution is to create the device using the computer on which
+the student is working and a webcam. </p>
+<p>	>>#Reservation: raising the hand is sufficient for the student to be guaranteed of a tutor to come to help</p>
+<p>     >>#Queue Management: the students' reservations have to be managed in a queue</p>
+<p>     >>#Communication:</p>
+<p>	    >>>between #queue management module and tutors: tutors don't need to have access to the queue, they need, wherever
+            they are in the laib, just to know the student to go to help. Also these requirement implies that every tutor has
+            to be provided a device able to communicate with the environment.
+</p>
+<h2>NON FUNCTIONAL REQUIREMENTS (product requirements):</h2>
+<p>the hand must be recognized in less than 10 seconds
+      >>the student must know if the hand has been recognized
+      >>sensing must not depend on the webcam used
+      >>simultaneous requests must to be managed</p>
+<h2></h2>
+<p></p>
 <section id="templatemo_contact">
     <div class="container">
         <div class="row" id="templatemo_contact_gray_wap">
