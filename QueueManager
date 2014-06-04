@@ -1,0 +1,14 @@
+'''
+Created on 04/giu/2014
+
+@author: Anna
+'''
+import Queue
+
+class QueueManager:
+    def __init__(self):
+        self.coda=Queue(0)
+    def isEmpty(self):
+        return self.coda.empty()
+    def getPC(self):
+        return self.coda.get()
