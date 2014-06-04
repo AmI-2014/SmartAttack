@@ -12,3 +12,5 @@ class QueueManager:
         return self.coda.empty()
     def getPC(self):
         return self.coda.get()
+    def length(self):
+        return self.coda.qsize()
