@@ -31,7 +31,8 @@ class QueueManager:
     
     @jsonify
     def POST(self):
-        pass
+        add_request=json.loads(cherrypy.request.body.read())
+        self.coda.put(add_request)
     
     @jsonify
     def GET(self, check_is_empty=None, check_length=None):
