@@ -1,11 +1,15 @@
 '''
-Created on 04/giu/2014
+Created on Jun 9, 2014
 
-@author: Anna
+@author: POLITO\s182340
 '''
 import Queue
+import cherrypy
 
 class QueueManager:
+    
+    exposed=True
+    
     def __init__(self):
         self.coda=Queue(0)
     def isEmpty(self):
@@ -14,3 +18,19 @@ class QueueManager:
         return self.coda.get()
     def length(self):
         return self.coda.qsize()
+    
+    def POST(self):
+        pass
+    def GET(self):
+        pass
+    
+if __name__ == '__main__':
+    cherrypy.tree.mount(
+                    QueueManager(), 'api/v1/queuemanager', 
+                    {'/':
+        {'request.dispatch': cherrypy.dispatch.MethodDispatcher()}
+    }
+    )
+cherrypy.engine.start()
+cherrypy.engine.block()
+        
