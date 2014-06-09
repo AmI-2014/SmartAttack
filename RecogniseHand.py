@@ -1,3 +1,10 @@
+'''
+Created on Jun 9, 2014
+
+@author: POLITO\s182340
+'''
+import REST_client, socket
+
 #originale
 import time
 import cv2
@@ -55,6 +62,11 @@ while( cap.isOpened() ) :
     else: flag=0
     if(flag==5):
         print('RILEVATO')
+        pc_id=socket.gethostname()
+        pc_id_json="{'pc_id':"
+        pc_id_json=pc_id_json+pc_id+"}"
+        url="localhost/api/v1/queuemanager"
+        REST_client.send('POST',url,pc_id_json, { 'Content-Type':'application/json' })
         
         #exit(1)
         
