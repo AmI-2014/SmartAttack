@@ -6,6 +6,8 @@ Created on Jun 9, 2014
 import Queue
 import cherrypy
 import json
+from functools import wraps
+#from subprocess import Popen, PIPE
 
 def jsonify(func):
     '''JSON decorator for CherryPy'''
@@ -37,18 +39,14 @@ class QueueManager:
     @jsonify
     def GET(self, check_is_empty=None, check_length=None):
         if(check_is_empty!=None):
-            return self.coda.empty()
+            return {'empty':self.coda.empty()}
         else:
             if(check_length!=None):
-                return self.coda.qsize()
+                return {'size':self.coda.qsize()}
             else:
-                return self.coda.get()              
+                return {'pc_id':self.coda.get()}            
         
         
-
-    
-    
-    
 if __name__ == '__main__':
     cherrypy.tree.mount(
                     QueueManager(), 'api/v1/queuemanager', 
