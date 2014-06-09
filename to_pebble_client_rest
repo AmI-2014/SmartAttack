@@ -1,0 +1,10 @@
+    #url per avere risultato di isempty    
+    url="localhost/api/v1/queuemanager/?check_is_empty=1"
+    
+    #url per avere lunghezza
+    url="localhost/api/v1/queuemanager/?check_length=1"
+    
+    #url per avewre il codice del pc
+    url="localhost/api/v1/queuemanager"
+    
+    REST_client.send('POST',url, {}, { 'Content-Type':'application/json' })
