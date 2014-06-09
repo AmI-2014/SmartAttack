@@ -7,4 +7,4 @@ Created on Jun 9, 2014
 if __name__ == '__main__':
     pc_id_json="{'pc_id':"
     pc_id_json=pc_id_json+pc_id+"}"
-    send('POST',url,pc_id_json, header)
+    REST_client.send('POST',url,pc_id_json, header)
