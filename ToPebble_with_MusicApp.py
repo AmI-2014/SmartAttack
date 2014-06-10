@@ -1,20 +1,20 @@
 import pebblelibs as libpebble
-import time
+import time, REST_client
 
 
 
 
 def wait_new_pc():
-    while(IsEmpty): '''serve la funzione che interroga la coda chiedendo se è vuota'''
-    time.sleep(5)
-    sender = 'New help request'
-    body = 'Press NEXT to receive it'
-    pebble.notification_sms(sender, body)
+    url="localhost/api/v1/queuemanager/?check_is_empty=1"
+    while(REST_client.send('POST',url, {}, { 'Content-Type':'application/json' })==1): 
+        sender = 'New help request'
+        body = 'Press NEXT to receive it'
+        pebble.notification_sms(sender, body)
     
 
 def set_metadata():
     # init
-    artist = "  Andy  "
+    artist = " Andy "
     title = "Press NEXT to receive"
     album = "a new pc to visit"
     
@@ -22,13 +22,15 @@ def set_metadata():
     
 def send_pc_to_visit():
 
-    artist = '  Andy  '
+    artist = ' Andy '
 
          
         #get pc code and save it as track
-    track = get_pc_from_queue() '''serve la funzione che prende il prossimo pc dalla coda '''
+    url="localhost/api/v1/queuemanager"    
+    track = REST_client.send('POST',url, {}, { 'Content-Type':'application/json' })
         #get the number of pc in queue
-    n_pc_in_queue = get_queue_lenght() '''serve la funzione che ritorna il numero di pc in coda (deve essere una stringa)'''
+    url="localhost/api/v1/queuemanager/?check_length=1"
+    n_pc_in_queue = REST_client.send('POST',url, {}, { 'Content-Type':'application/json' })
     album = n_pc_in_queue + 'pc in queue'
         
     pebble.set_nowplaying_metadata(track, album, artist)
