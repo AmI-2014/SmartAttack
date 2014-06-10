@@ -1,11 +1,16 @@
-import pebblelibs.pebble as libpebble
+import pebblelibs as libpebble
 import time
 
-#test
-def get_pc_from_queue():
-    return '10s'
-def get_queue_lenght():
-    return 5
+
+
+
+def wait_new_pc():
+    while(IsEmpty): '''serve la funzione che interroga la coda chiedendo se è vuota'''
+    time.sleep(5)
+    sender = 'New help request'
+    body = 'Press NEXT to receive it'
+    pebble.notification_sms(sender, body)
+    
 
 def set_metadata():
     # init
@@ -17,28 +22,22 @@ def set_metadata():
     
 def send_pc_to_visit():
 
-    pc_code = get_pc_from_queue()
-    
-    if pc_code == None: 
-        #queue is empy
-        t_track = 'No pc in queue'
-        t_album = ''
-    else : 
-        t_track = pc_code
-        #get the number of pc in queue
-        n_pc_in_queue = get_queue_lenght()
-        t_album = n_pc_in_queue + 'pc in queue'
-    
     artist = '  Andy  '
-    track = t_track
-    album = t_album
-    
+
+         
+        #get pc code and save it as track
+    track = get_pc_from_queue() '''serve la funzione che prende il prossimo pc dalla coda '''
+        #get the number of pc in queue
+    n_pc_in_queue = get_queue_lenght() '''serve la funzione che ritorna il numero di pc in coda (deve essere una stringa)'''
+    album = n_pc_in_queue + 'pc in queue'
+        
     pebble.set_nowplaying_metadata(track, album, artist)
+    
 
 def andy_handler(endpoint, response):
     control_events = {
                       "NEXT"
-                      #you can add a function with "PREVIOUS" that send old pc codes
+                      #you can add a function with "PREVIOUS" that send old pc code
                       # to avoid the problem that if a tutor click NEXT twice you loose a reservation
                       }
     if response in control_events:
