@@ -71,18 +71,24 @@ ANALYSIS & SYSTEM DESIGN:
  >>Software architecture:
 	 >>>Major software architectural modules:
 			>>>>Raised Hand Recognition and reservation: software wrote in python that uses the OpenCV libraries to analyze the 
-			    images captured from webcam and, recognized the raised hand, communicates to the queue manager the reservation
-			>>>>Queue manager: software wrote in python that manages the queue and when receives a query from a pebble sends it 
-			    the next computer where the tutor has to go
-			>>>>pebble: pebble app that we're still developing.
+			    images captured from webcam and, recognized the raised hand, communicates to the queue manager the reservation.
+			    We're still developing it because our first attempt is too sensitive to what's in the background and may fail in too
+			    much situations. We've now a code thet works very well, based on hand colour recognition. It however has to be
+			    calibrated every time a different person uses it. we think that this features doesn't suit with the Ambient
+			    Intelligence aim of non intrusive actions, so we're trying to improve our code to avoid this step.
+			>>>>Queue manager: software wrote in python that manages the queue and when, received a query from a pebble, sends it 
+			    the next computer where the tutor has to go. Actually we spread all these functionalities in 2 different,
+			    indipendent modules:
+			    >>>>>Queue manager: it keeps the queue of reservations and provides possibility to: create the queue, ask it's 
+			    length, ask if it's empty, ask for the next element in it, add an element to it.
+			    >>>>>To_pebble module: the interface between pebbles and queue manager.
+			>>>>To_pebble module: we had to write it from scratch and the same went for the app that has to be installed on the 
+			    pebble. Actually pebbles are meant to communicate with a smartphone and some details necessary to know to develop 
+			    an app are hidden. After some attempts, we found thet the only way to make things work is to override the code of 
+			    the Music app already installed in the pebble, adapting to it our code.
 			
  >>Communication between devices(network architecture):
-	 >>>Recognition module-Queue Manager: the software able to recognize gestures sends to the queue manager something that 
-	    identifies the computer on which the student that has raised the hand is working. The	possible ways to do it are: 
-			>>>>SOCKET: we thaught that the best way to do it is to send a string containing the computer id. 
-					We've verified that we can perform this very simple communication using a socket: the socket would be opened to 
-					send the string and then closed to avoid the presence of too many unused sockets. 
-			>>>>REST WEB SERVER: the other option would be using REST and json
-			>>>>OTHER OPTIONS: we're considering other options. We've not implemented anything yet.
-	 >>>queue Manager-Pebble: bluetooth
-****************************************************
+   >>>pdebble-To_pebble module: bluetooth
+   >>>To_pebble module-Queue Manager and computer-Queue Manager: we used rest: we make the queue manager act as a web rest server and the other
+      two modules communicate and share data with him through simple POST and GET commands managed that are managed by a generic client module.
+ ***************************************************
