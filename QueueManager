@@ -1,9 +1,4 @@
-'''
-Created on Jun 9, 2014
-
-@author: POLITO\s182340
-'''
-import Queue
+from Queue import Queue
 import cherrypy
 import json
 from functools import wraps
@@ -44,12 +39,12 @@ class QueueManager:
             if(check_length!=None):
                 return {'size':self.coda.qsize()}
             else:
-                return {'pc_id':self.coda.get()}            
+                return {'pc_id':self.coda.get()}
         
         
 if __name__ == '__main__':
     cherrypy.tree.mount(
-                    QueueManager(), 'api/v1/queuemanager', 
+                    QueueManager(), 'api/v1/queuemanager',
                     {'/':
         {'request.dispatch': cherrypy.dispatch.MethodDispatcher()}
     }
@@ -57,4 +52,3 @@ if __name__ == '__main__':
 
 cherrypy.engine.start()
 cherrypy.engine.block()
-        
