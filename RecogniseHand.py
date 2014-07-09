@@ -65,7 +65,7 @@ while( cap.isOpened() ) :
         pc_id=socket.gethostname()
         pc_id_json="{'pc_id':"
         pc_id_json=pc_id_json+pc_id+"}"
-        url="localhost/api/v1/queuemanager"
+        url="http://localhost/api/v1/queuemanager"
         REST_client.send('POST',url,pc_id_json, { 'Content-Type':'application/json' })
         
         #exit(1)
