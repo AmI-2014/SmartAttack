@@ -29,22 +29,28 @@ class QueueManager:
     @jsonify
     def POST(self):
         add_request=json.loads(cherrypy.request.body.read())
-        self.coda.put(add_request)
+        self.coda.put(add_request["pc_id"])
+        
     
     @jsonify
     def GET(self, check_is_empty=None, check_length=None):
+        data={}
         if(check_is_empty!=None):
-            return {'empty':self.coda.empty()}
+            data['empty']=self.coda.empty()
+            return data
         else:
             if(check_length!=None):
-                return {'size':self.coda.qsize()}
+                data['size']=self.coda.qsize()
+                return data
             else:
-                return {'pc_id':self.coda.get()}
+                data['pc_id']=self.coda.get_nowait()
+                return data
         
         
 if __name__ == '__main__':
+    queuemanager=QueueManager()
     cherrypy.tree.mount(
-                    QueueManager(), 'api/v1/queuemanager',
+                    queuemanager, '/api/v1/queuemanager',
                     {'/':
         {'request.dispatch': cherrypy.dispatch.MethodDispatcher()}
     }
