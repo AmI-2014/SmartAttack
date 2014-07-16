@@ -5,8 +5,8 @@ import time, REST_client
 
 
 def wait_new_pc():
-    url="localhost/api/v1/queuemanager/?check_is_empty=1"
-    while(REST_client.send('POST',url, {}, { 'Content-Type':'application/json' })==1): 
+    url="http://localhost/api/v1/queuemanager/?check_is_empty=1"
+    while(REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })==1): 
         sender = 'New help request'
         body = 'Press NEXT to receive it'
         pebble.notification_sms(sender, body)
@@ -26,11 +26,11 @@ def send_pc_to_visit():
 
          
         #get pc code and save it as track
-    url="localhost/api/v1/queuemanager"    
-    track = REST_client.send('POST',url, {}, { 'Content-Type':'application/json' })
+    url="HTTP://localhost/api/v1/queuemanager"    
+    track = REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })
         #get the number of pc in queue
-    url="localhost/api/v1/queuemanager/?check_length=1"
-    n_pc_in_queue = REST_client.send('POST',url, {}, { 'Content-Type':'application/json' })
+    url="http://localhost/api/v1/queuemanager/?check_length=1"
+    n_pc_in_queue = REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })
     album = n_pc_in_queue + 'pc in queue'
         
     pebble.set_nowplaying_metadata(track, album, artist)
