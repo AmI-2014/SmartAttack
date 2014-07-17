@@ -3,13 +3,21 @@ Created on Jun 9, 2014
 
 @author: POLITO\s182340
 '''
-import REST_client, socket
+import socket
+import REST_client
 
 #originale
 import time
 import cv2
 import numpy as np
-cap = cv2.VideoCapture(1)
+
+import subprocess
+
+def sendmessage(message):
+    subprocess.Popen(['notify-send', message])
+    return
+
+cap = cv2.VideoCapture(0)
 flag = 0
 while( cap.isOpened() ) :
     ret,img = cap.read()
@@ -56,17 +64,19 @@ while( cap.isOpened() ) :
                     cv2.line(img,start,end,[0,255,0],2)
                     
                     cv2.circle(img,far,5,[0,0,255],-1)
-    print(i)
+    #print(i)
     if(i>= 5):
         flag=flag+1
     else: flag=0
     if(flag==5):
         print('RILEVATO')
         pc_id=socket.gethostname()
-        pc_id_json="{'pc_id':"
-        pc_id_json=pc_id_json+pc_id+"}"
-        url="http://localhost/api/v1/queuemanager"
+        pc_id_json='{"pc_id":'
+        pc_id_json=pc_id_json+'"'+pc_id+'"}'
+        url="http://localhost:8080/api/v1/queuemanager"
         REST_client.send('POST',url,pc_id_json, { 'Content-Type':'application/json' })
+        print('ho inviato')
+        sendmessage('You are in queue')
         
         #exit(1)
         
