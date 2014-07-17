@@ -5,11 +5,20 @@ import time, REST_client
 
 
 def wait_new_pc():
+    
+    artist = " Andy "
+    title = "The queue is empty"
+    album = "wait until a new request"
+    
+    pebble.set_nowplaying_metadata(title, album, artist)
+    
     url="http://localhost/api/v1/queuemanager/?check_is_empty=1"
-    while(REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })==1): 
-        sender = 'New help request'
-        body = 'Press NEXT to receive it'
-        pebble.notification_sms(sender, body)
+    #REST_client.send boolean 1 = empty 
+    while(REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })==1):
+        pass
+    sender = 'New help request'
+    body = 'Wait to receive it'
+    pebble.notification_sms(sender, body)
     
 
 def set_metadata():
@@ -21,19 +30,26 @@ def set_metadata():
     pebble.set_nowplaying_metadata(title, album, artist)
     
 def send_pc_to_visit():
-
+    
+    url="http://localhost/api/v1/queuemanager/?check_is_empty=1"
+    #check if the queue is empty, if it is empty call polling function
+    if(REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })==1):
+        wait_new_pc()
+        
     artist = ' Andy '
 
          
         #get pc code and save it as track
-    url="HTTP://localhost/api/v1/queuemanager"    
+    url="HTTP://localhost/api/v1/queuemanager"
     track = REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })
         #get the number of pc in queue
     url="http://localhost/api/v1/queuemanager/?check_length=1"
     n_pc_in_queue = REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })
     album = n_pc_in_queue + 'pc in queue'
-        
+    
+    print '2'
     pebble.set_nowplaying_metadata(track, album, artist)
+    print '3'
     
 
 def andy_handler(endpoint, response):
@@ -44,6 +60,7 @@ def andy_handler(endpoint, response):
                       }
     if response in control_events:
         if response == 'NEXT' :
+            print '1'
             send_pc_to_visit()
 
 if __name__ == '__main__':
