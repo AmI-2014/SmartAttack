@@ -14,15 +14,15 @@ def wait_new_pc():
     
     url=ip + "/api/v1/queuemanager/?check_is_empty=1"
     #REST_client.send boolean 1 = empty
-    dict3=REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })
+    dict3=REST_client.send('GET',url, None, { 'Content-Type':'application/json' })
     isEmpty=dict3["empty"]
     
     while(isEmpty):
-        dict3=REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })
+        dict3=REST_client.send('GET',url, None, { 'Content-Type':'application/json' })
         isEmpty=dict3["empty"]
         
     sender = 'New help request'
-    body = 'Wait to receive it'
+    body = 'Press to receive it'
     pebble.notification_sms(sender, body)
 
 def set_metadata():
@@ -34,6 +34,15 @@ def set_metadata():
     pebble.set_nowplaying_metadata(title, album, artist)
     
 def send_pc_to_visit():
+    
+    url=ip + "/api/v1/queuemanager/?check_is_empty=1"
+    #REST_client.send boolean 1 = empty
+    dict3=REST_client.send('GET',url, None, { 'Content-Type':'application/json' })
+    isEmpty=dict3["empty"]
+    
+    print(isEmpty)
+    if(isEmpty):
+        wait_new_pc()
     
         
     artist = ' Andy '
@@ -51,7 +60,7 @@ def send_pc_to_visit():
     
     n_pc_in_queue =str( dict2["size"])
     
-    album =n_pc_in_queue+ "pc in queue"
+    album =n_pc_in_queue+ " pc in queue"
     print(album)
     
     print '2'
