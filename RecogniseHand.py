@@ -13,6 +13,8 @@ import numpy as np
 
 import subprocess
 
+ip = "http://localhost:8080"
+
 def sendmessage(message):
     subprocess.Popen(['notify-send', message])
     return
@@ -54,7 +56,7 @@ while( cap.isOpened() ) :
     if(1):
         defects = cv2.convexityDefects(cnt,hull)
         mind=0
-        maxd=0
+        maxd=0 
         for i in range(defects.shape[0]):
                     s,e,f,d = defects[i,0]
                     start = tuple(cnt[s][0])
@@ -65,7 +67,7 @@ while( cap.isOpened() ) :
                     
                     cv2.circle(img,far,5,[0,0,255],-1)
     #print(i)
-    if(i>= 5):
+    if(i>= 3):
         flag=flag+1
     else: flag=0
     if(flag==5):
@@ -73,7 +75,7 @@ while( cap.isOpened() ) :
         pc_id=socket.gethostname()
         pc_id_json='{"pc_id":'
         pc_id_json=pc_id_json+'"'+pc_id+'"}'
-        url="http://localhost:8080/api/v1/queuemanager"
+        url= ip + "/api/v1/queuemanager"
         REST_client.send('POST',url,pc_id_json, { 'Content-Type':'application/json' })
         print('ho inviato')
         sendmessage('You are in queue')
