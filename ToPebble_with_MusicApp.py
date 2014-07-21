@@ -1,25 +1,29 @@
 import pebblelibs as libpebble
 import time, REST_client
+import json
 
 
-
+ip="http://localhost:8080"
 
 def wait_new_pc():
-    
     artist = " Andy "
     title = "The queue is empty"
     album = "wait until a new request"
     
     pebble.set_nowplaying_metadata(title, album, artist)
     
-    url="http://localhost/api/v1/queuemanager/?check_is_empty=1"
-    #REST_client.send boolean 1 = empty 
-    while(REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })==1):
-        pass
+    url=ip + "/api/v1/queuemanager/?check_is_empty=1"
+    #REST_client.send boolean 1 = empty
+    dict3=REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })
+    isEmpty=dict3["empty"]
+    
+    while(isEmpty):
+        dict3=REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })
+        isEmpty=dict3["empty"]
+        
     sender = 'New help request'
     body = 'Wait to receive it'
     pebble.notification_sms(sender, body)
-    
 
 def set_metadata():
     # init
@@ -31,21 +35,24 @@ def set_metadata():
     
 def send_pc_to_visit():
     
-    url="http://localhost/api/v1/queuemanager/?check_is_empty=1"
-    #check if the queue is empty, if it is empty call polling function
-    if(REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })==1):
-        wait_new_pc()
         
     artist = ' Andy '
 
-         
         #get pc code and save it as track
-    url="HTTP://localhost/api/v1/queuemanager"
-    track = REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })
+    url= ip + "/api/v1/queuemanager"
+    dict1 = REST_client.send('GET',url, None, { 'Content-Type':'application/json' })
+    
+    track =str(dict1["pc_id"])
+    print(track)
+    
         #get the number of pc in queue
-    url="http://localhost/api/v1/queuemanager/?check_length=1"
-    n_pc_in_queue = REST_client.send('GET',url, {}, { 'Content-Type':'application/json' })
-    album = n_pc_in_queue + 'pc in queue'
+    url= ip + "/api/v1/queuemanager/?check_length=1"
+    dict2 = REST_client.send('GET',url, None, { 'Content-Type':'application/json' })
+    
+    n_pc_in_queue =str( dict2["size"])
+    
+    album =n_pc_in_queue+ "pc in queue"
+    print(album)
     
     print '2'
     pebble.set_nowplaying_metadata(track, album, artist)
